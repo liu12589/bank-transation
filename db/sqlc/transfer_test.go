@@ -20,8 +20,8 @@ func CreateTestTransfer(t *testing.T, fromAccount Account, toAccount Account) Tr
 
 	require.Equal(t, fromAccount.ID, transfer.FromAccountID)
 	require.Equal(t, toAccount.ID, transfer.ToAccountID)
-	require.NotEmpty(t, transfer.ID)
-	require.NotEmpty(t, transfer.CreatedAt)
+	require.NotZero(t, transfer.ID)
+	require.NotZero(t, transfer.CreatedAt)
 	return transfer
 }
 
