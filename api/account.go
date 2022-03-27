@@ -1,7 +1,7 @@
 package api
 
 import (
-	db "bank-transation/db/sqlc"
+	db "bank-transaction/db/sqlc"
 	"database/sql"
 	"github.com/gin-gonic/gin"
 	"net/http"
