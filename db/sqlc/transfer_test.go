@@ -1,7 +1,7 @@
 package db
 
 import (
-	"bank-transation/util"
+	"bank-transaction/util"
 	"context"
 	"github.com/stretchr/testify/require"
 	"testing"

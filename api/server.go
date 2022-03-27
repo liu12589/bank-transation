@@ -1,7 +1,7 @@
 package api
 
 import (
-	db "bank-transation/db/sqlc"
+	db "bank-transaction/db/sqlc"
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,8 +12,8 @@ type Server struct {
 }
 
 // NewServer creates a new HTTP server and set up routing.
-func NewServer(store *db.Store) *Server {
-	server := &Server{store: *store}
+func NewServer(store db.Store) *Server {
+	server := &Server{store: store}
 	router := gin.Default()
 
 	router.POST("/accounts", server.createAccount)

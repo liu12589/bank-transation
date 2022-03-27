@@ -1,6 +1,7 @@
 package db
 
 import (
+	"bank-transaction/util"
 	"database/sql"
 	_ "github.com/lib/pq"
 	"log"
@@ -8,17 +9,15 @@ import (
 	"testing"
 )
 
-const (
-	dbDriver = "postgres"
-	dbSource = "postgresql://root:secret@localhost:5432/simplebank?sslmode=disable"
-)
-
 var testQueries *Queries
 var testDb *sql.DB
 
 func TestMain(m *testing.M) {
-	var err error
-	testDb, err = sql.Open(dbDriver, dbSource)
+	config, err := util.LoadConfig("../..")
+	if err != nil {
+		log.Fatal("cannot open the config", err)
+	}
+	testDb, err = sql.Open(config.DBDriver, config.DBSource)
 	if err != nil {
 		log.Fatal("cannot connect to db:", err)
 	}

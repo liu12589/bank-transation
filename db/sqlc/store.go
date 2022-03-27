@@ -6,22 +6,27 @@ import (
 	"fmt"
 )
 
-// Store 提供执行查询和事务的所有方法
-type Store struct {
+type Store interface {
+	Querier
+	TransferTx(ctx context.Context, arg TransferTxParams) (TransferTxResult, error)
+}
+
+// SQLStore 提供执行查询和事务的所有方法
+type SQLStore struct {
 	*Queries
 	db *sql.DB
 }
 
 // NewStore 创建一个新的 Store
-func NewStore(db *sql.DB) *Store {
-	return &Store{
+func NewStore(db *sql.DB) Store {
+	return &SQLStore{
 		db:      db,
 		Queries: New(db),
 	}
 }
 
 // 用于开启一个事务，并执行事务 BeginTx 开启事务；New(tx) 创建一个可使用 DBTX 方法的对象，执行sql语句；判断成功则提交，失败则会滚。
-func (store *Store) execTx(ctx context.Context, fn func(queries *Queries) error) error {
+func (store *SQLStore) execTx(ctx context.Context, fn func(queries *Queries) error) error {
 	tx, err := store.db.BeginTx(ctx, nil)
 	if err != nil {
 		return err
@@ -56,7 +61,7 @@ type TransferTxResult struct {
 
 // TransferTx 交易事务
 // 流程：(创建转账账户，修改转钱账户信息，修改收钱账户信息)、放入事务函数执行
-func (store *Store) TransferTx(ctx context.Context, arg TransferTxParams) (TransferTxResult, error) {
+func (store *SQLStore) TransferTx(ctx context.Context, arg TransferTxParams) (TransferTxResult, error) {
 	var result TransferTxResult
 
 	fn := func(q *Queries) error {
