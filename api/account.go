@@ -66,6 +66,7 @@ func (server *Server) listAccount(ctx *gin.Context) {
 	var req listRequest
 	if err := ctx.ShouldBindQuery(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
 	}
 
 	arg := db.ListAccountsParams{
