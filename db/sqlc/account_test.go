@@ -10,8 +10,10 @@ import (
 )
 
 func CreateTestAccount(t *testing.T) Account {
+	user := createTestUser(t)
+
 	arg := CreateAccountParams{
-		Owner:    util.GenerateOwner(),
+		Owner:    user.Username,
 		Balance:  util.GenerateMoney(),
 		Currency: util.GenerateCurrency(),
 	}
@@ -29,6 +31,10 @@ func CreateTestAccount(t *testing.T) Account {
 	require.NotZero(t, account.ID)
 	require.NotZero(t, account.CreatedAt)
 	return account
+}
+
+func TestCreateAccount(t *testing.T) {
+	CreateTestAccount(t)
 }
 
 func TestGetAccount(t *testing.T) {

@@ -12,6 +12,7 @@ import (
 */
 
 const alphabet = "abcdefghigklmnopqrstuvwxyz"
+const figureAlphabet = "abcdefghigklmnopqrstuvwxyz0123456789"
 
 func init() {
 	// 每次调用初始化不同的随机数种子
@@ -19,8 +20,8 @@ func init() {
 }
 
 // GenerateInt 生成随机数
-func GenerateInt(min, max int64) int64  {
-	return min + rand.Int63n(max - min + 1)
+func GenerateInt(min, max int64) int64 {
+	return min + rand.Int63n(max-min+1)
 }
 
 func GenerateString(n int) string {
@@ -38,11 +39,27 @@ func GenerateOwner() string {
 }
 
 func GenerateMoney() int64 {
-	return GenerateInt(0,1000)
+	return GenerateInt(0, 1000)
 }
 
 func GenerateCurrency() string {
 	currencies := []string{"EUR", "USD", "CAD"}
 	n := len(currencies)
 	return currencies[rand.Intn(n)]
+}
+
+func GenerateEmail(length int) string {
+	var sb strings.Builder
+	emailType := []string{
+		"@qq.com",
+		"@163.com",
+		"@ccnu.cn.com",
+	}
+	n := len(emailType)
+	k := len(figureAlphabet)
+	for i := 0; i < length; i++ {
+		c := figureAlphabet[rand.Intn(k)]
+		sb.WriteByte(c)
+	}
+	return sb.String() + emailType[rand.Intn(n)]
 }
